@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../models/models.dart';
 
@@ -84,7 +85,7 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
             buildNameField(),
             buildImportanceField(),
             buildDateField(context),
-            // TODO 16: Add time picker
+            buildTimeField(context),
             // TODO 17: Add color picker
             // TODO 18: Add slider
             // TODO: 19: Add Grocery Tile
@@ -204,11 +205,42 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
             ),
           ],
         ),
+        Text('${DateFormat('yyyy-MM-dd').format(_dueDate)}'),
       ],
     );
   }
 
-  // TODO: Add buildTimeField()
+  Widget buildTimeField(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Time of Day',
+              style: GoogleFonts.lato(fontSize: 28.0),
+            ),
+            TextButton(
+              child: const Text('Select'),
+              onPressed: () async {
+                final timeOfDay = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+                setState(() {
+                  if (timeOfDay != null) {
+                    _timeOfDay = timeOfDay;
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+        Text('${_timeOfDay.format(context)}'),
+      ],
+    );
+  }
 
   // TODO: Add buildColorPicker()
 
